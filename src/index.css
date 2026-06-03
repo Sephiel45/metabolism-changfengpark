@@ -1,0 +1,192 @@
+/* Hero cover only — do not use outside #home */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@900&display=swap');
+
+/* Site typography: Heading / Body / Detail (History, Map, Interview) */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+
+/*
+ * Typography system (max 3 families outside hero)
+ * - font-sans  → Space Grotesk — English headings
+ * - font-serif → Noto Serif SC — archive / body Chinese
+ * - font-mono  → JetBrains Mono — nav, labels, timestamps
+ * - font-zh    → Noto Sans SC 900 — hero cover only (#home)
+ */
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", ui-serif, "Songti SC", "STSong", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+  --font-zh: "Noto Sans SC", sans-serif;
+}
+
+body {
+  background-color: #050505;
+  color: #eee;
+  overflow-x: hidden;
+  font-family: var(--font-serif);
+}
+
+html {
+  scroll-behavior: smooth;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><polygon points="3 3 10 20 13 13 20 10 3 3" fill="%23FFFFFF" stroke="%23222" stroke-width="1"/></svg>'), auto;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 2px white;
+  color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Editorial archive panels (History, etc.) */
+@layer components {
+  .archive-overlay {
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      linear-gradient(180deg, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.42) 38%, rgba(5, 5, 5, 0.55) 68%, rgba(5, 5, 5, 0.92) 100%),
+      radial-gradient(ellipse 85% 70% at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  .archive-panel {
+    @apply rounded-sm border border-white/10 bg-black/50 px-8 py-10 shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-md md:px-12 md:py-12;
+  }
+
+  .archive-prose {
+    @apply font-serif text-[15px] md:text-[17px] leading-loose tracking-wide text-white/92;
+  }
+
+  .archive-prose p + p {
+    @apply mt-8;
+  }
+
+  .archive-heading {
+    @apply font-sans font-normal uppercase text-[#d8d4d0] leading-snug tracking-[0.22em] drop-shadow-sm;
+  }
+
+  /* 竖排古籍式历史正文：从上到下、从右往左 */
+  .vertical-archive-wrap {
+    @apply flex flex-row-reverse items-start justify-center gap-1 md:gap-1.5 mx-auto pointer-events-auto;
+    max-height: min(72vh, 640px);
+  }
+
+  .vertical-archive-title {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    @apply font-serif text-lg md:text-xl tracking-[0.35em] text-white/90 shrink-0 m-0 p-0;
+    letter-spacing: 0.35em;
+  }
+
+  .vertical-archive-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    @apply font-serif text-[14px] md:text-[15px] text-white/88 overflow-x-auto overflow-y-hidden m-0 p-0;
+    height: min(68vh, 600px);
+    max-width: min(78vw, 920px);
+    line-height: 2.15;
+    letter-spacing: 0.14em;
+    text-align: justify;
+  }
+
+  .vertical-archive-text::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .vertical-archive-label,
+  .vertical-archive-para {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+  }
+
+  .vertical-archive-label {
+    @apply font-serif text-[15px] md:text-base font-semibold text-white/95;
+    margin-inline-start: 2.5em;
+  }
+
+  .vertical-archive-label:first-child {
+    margin-inline-start: 0;
+  }
+
+  .vertical-archive-para {
+    /* vertical-rl 下 inline-start = 顶部，block-start = 列间距方向 */
+    margin-inline-start: 0;
+    margin-block-start: 0.1em;
+    text-indent: 0;
+  }
+
+  .vertical-archive-para:first-child {
+    margin-block-start: 0;
+  }
+
+  .vertical-archive-divider {
+    display: inline-block;
+    vertical-align: top;
+    width: 1px;
+    height: 1.5em;
+    margin-inline: 1.2em;
+    margin-block: 0;
+    @apply bg-white/20;
+  }
+
+  .nav-link {
+    @apply relative inline-block font-mono text-xs tracking-widest uppercase text-white/50 transition-colors duration-300 ease-out;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white/70 transition-transform duration-300 ease-out;
+  }
+
+  .nav-link:hover {
+    @apply text-white/95;
+  }
+
+  .nav-link:hover::after {
+    @apply scale-x-100;
+  }
+
+  .nav-link:focus-visible {
+    @apply text-white/95 outline-none;
+  }
+
+  .nav-link:focus-visible::after {
+    @apply scale-x-100;
+  }
+
+  .nav-link[aria-current="page"]::after {
+    @apply scale-x-100 bg-white/50;
+  }
+
+  .nav-control-btn {
+    @apply flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-transparent text-white/55 transition-[color,border-color] duration-300 ease-out;
+  }
+
+  .nav-control-btn:hover {
+    @apply border-white/45 text-white/95;
+  }
+
+  .nav-control-btn:focus-visible {
+    @apply border-white/45 text-white/95 outline-none;
+  }
+
+  .nav-control-btn:disabled {
+    @apply cursor-not-allowed border-white/10 text-white/25;
+  }
+
+  .nav-control-btn:disabled:hover {
+    @apply border-white/10 text-white/25;
+  }
+}

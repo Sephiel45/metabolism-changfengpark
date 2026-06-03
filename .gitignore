@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Large Gaussian Splat scan files — host these externally (see .env.example)
+public/resources/scans/*.ply
